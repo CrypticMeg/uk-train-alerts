@@ -1,0 +1,17 @@
+commute_days:
+  - Tuesday
+  - Friday
+
+state_file: state.json
+
+alerts:
+  delay_minutes: 5
+  major_delay_minutes: 10
+
+journeys:
+  - label: "Morning commute"
+    origin: "ABC"
+    destination: "XYZ"
+    scheduled_departure: "08:00"
+    check_from: "07:15"
+    check_to: "08:45"

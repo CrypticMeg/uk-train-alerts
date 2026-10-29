@@ -1,0 +1,17 @@
+# Secrets
+.env
+
+# Personal configuration
+config.yaml
+
+# Runtime state and logs
+state.json
+logs/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
