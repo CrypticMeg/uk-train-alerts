@@ -1,3 +1,4 @@
+"""Check configured UK train journeys and send ntfy alerts."""
 import json
 import os
 import subprocess
@@ -37,6 +38,7 @@ NTFY_PRIORITY_MAP = {
 
 
 def load_config() -> dict:
+    """Load and validate config.yaml."""
     with CONFIG_FILE.open("r", encoding="utf-8") as file:
         config = yaml.safe_load(file)
 
@@ -64,6 +66,7 @@ MAJOR_DELAY_ALERT_MINUTES = CONFIG["alerts"]["major_delay_minutes"]
 # ---------- HTTP helper ----------
 
 def request_with_retry(method: str, url: str, **kwargs) -> requests.Response:
+    """Make an HTTP request, retrying up to three times."""
     last_error = None
 
     for attempt in range(3):
@@ -82,6 +85,7 @@ def request_with_retry(method: str, url: str, **kwargs) -> requests.Response:
 # ---------- RTT API ----------
 
 def get_access_token() -> str:
+    """Exchange the RTT refresh token for an access token."""
     response = request_with_retry(
         "POST",
         f"{BASE_URL}/api/get_access_token",
@@ -96,6 +100,7 @@ def get_departures(
     scheduled_departure: str,
     access_token: str,
 ) -> dict:
+    """Fetch departures around the scheduled time from RTT."""
     departure_time = datetime.strptime(scheduled_departure, "%H:%M").time()
     today = datetime.now().date()
 
@@ -119,6 +124,7 @@ def get_departures(
 # ---------- Train status ----------
 
 def parse_time(value: str) -> datetime:
+    """Parse an ISO 8601 timestamp."""
     return datetime.fromisoformat(value)
 
 
@@ -126,6 +132,7 @@ def find_train(
     services: list,
     scheduled_departure: str,
 ) -> Optional[dict]:
+    """Return the service departing at the scheduled time, if any."""
     for service in services:
         departure = service["temporalData"]["departure"]
         advertised = departure.get("scheduleAdvertised")
@@ -137,6 +144,7 @@ def find_train(
 
 
 def assess_train(service: dict) -> tuple[Optional[str], str]:
+    """Return a status and priority for the service."""
     departure = service["temporalData"]["departure"]
 
     if departure.get("isCancelled"):
@@ -165,6 +173,7 @@ def assess_train(service: dict) -> tuple[Optional[str], str]:
 
 
 def describe_train(service: dict) -> str:
+    """Return a short description of the service."""
     departure = service["temporalData"]["departure"]
     scheduled = departure["scheduleAdvertised"][11:16]
     destination = service["destination"][0]["location"]["description"]
@@ -183,6 +192,7 @@ def describe_train(service: dict) -> str:
 # ---------- Alert state ----------
 
 def load_state() -> dict:
+    """Load alert state, returning an empty dict if unusable."""
     if not STATE_FILE.exists():
         return {}
 
@@ -192,16 +202,21 @@ def load_state() -> dict:
             return {}
         return json.loads(content)
     except (json.JSONDecodeError, OSError):
-        print("Warning: state file was empty or invalid; resetting alert state.")
+        print(
+            "Warning: state file was empty or invalid; "
+            "resetting alert state."
+        )
         return {}
 
 
 def save_state(state: dict) -> None:
+    """Write alert state to disk."""
     STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
     STATE_FILE.write_text(json.dumps(state, indent=2))
 
 
 def should_send_alert(service_id: str, status: str, state: dict) -> bool:
+    """Return True if this alert has not yet been sent today."""
     key = f"{service_id}:{status}"
     today = datetime.now(timezone.utc).date().isoformat()
 
@@ -214,7 +229,12 @@ def should_send_alert(service_id: str, status: str, state: dict) -> bool:
 
 # ---------- Notifications ----------
 
-def send_notification(title: str, message: str, priority: str = "high") -> None:
+def send_notification(
+    title: str,
+    message: str,
+    priority: str = "high",
+) -> None:
+    """Send a notification through ntfy."""
     ntfy_priority = NTFY_PRIORITY_MAP.get(priority, "default")
 
     response = request_with_retry(
@@ -234,6 +254,7 @@ def send_notification(title: str, message: str, priority: str = "high") -> None:
 # ---------- Main ----------
 
 def main() -> None:
+    """Check active journeys and send any alerts."""
     today_weekday = datetime.now().weekday()
 
     if today_weekday not in COMMUTE_WEEKDAYS:
@@ -289,7 +310,9 @@ def main() -> None:
             continue
 
         reasons = service.get("reasons") or []
-        reason = f" Reason: {reasons[0].get('shortText', '')}" if reasons else ""
+        reason = ""
+        if reasons:
+            reason = f" Reason: {reasons[0].get('shortText', '')}"
 
         message = f"{describe_train(service)} is {status}.{reason}"
 
