@@ -1,8 +1,9 @@
 MODULE := check_trains.py
+TESTS  := tests
 
 lint:
-	pycodestyle $(MODULE)
-	pydocstyle $(MODULE)
+	pycodestyle $(MODULE) $(TESTS)
+	pydocstyle $(MODULE) $(TESTS)
 
 test:
-	pytest $(MODULE)
+	pytest $(TESTS)
