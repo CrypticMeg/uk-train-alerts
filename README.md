@@ -196,6 +196,16 @@ sudo pmset repeat wake MTWRF 06:45:00
 - Do not commit API tokens, JWTs, or notification URLs.
 - If a credential is exposed, revoke or rotate it immediately.
 
+
+## Testing and Linting
+
+To lint and test the codebase run:
+
+```
+make lint
+make test
+```
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
