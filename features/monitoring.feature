@@ -14,6 +14,28 @@ Feature: Monitoring journeys
       Then each journey's notifications are decided independently
       And each notification identifies its train
 
+  Rule: Notifications due for one journey in the same check are combined
+
+    Scenario: Train not yet departed and already delayed
+      Given a monitored journey on a train with an ODT of 15:00
+      And the delay band size N is 5 minutes
+      And the train has not been checked before
+      And the train has not departed its origin
+      And the train is now 10 minutes late
+      When the system checks the train at 15:03
+      Then exactly one notification is sent
+      And it reports that the train has not yet departed and is 10 minutes late
+
+    Scenario: Train departs late into a new delay band
+      Given a monitored journey on a train with an ODT of 15:00
+      And the delay band size N is 5 minutes
+      And the commuter has been notified that the train has not yet departed
+      And the train departed its origin at 15:07
+      And the train is now 7 minutes late
+      When the system checks the train at 15:08
+      Then exactly one notification is sent
+      And it reports that the train departed 7 minutes late and is 7 minutes late
+
   Rule: The calendar is the primary source of journeys when available
 
     @assumption
