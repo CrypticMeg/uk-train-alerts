@@ -10,7 +10,7 @@ Feature: Departure from origin
   Background:
     Given a monitored journey on a train with an ODT of 15:00
 
-  Rule: A train that departs its origin on time is notified once
+  # Rule: A train that departs its origin on time is notified once
 
     @assumption
     Scenario: Train departs its origin on time
@@ -23,7 +23,7 @@ Feature: Departure from origin
       When the system checks the train at 15:08
       Then no departure notification is sent
 
-  Rule: A train not departed by its ODT is notified once, then again when it departs
+  # Rule: A train not departed by its ODT is notified once, then again when it departs
 
     Scenario: Train has not departed at the first check after its ODT
       Given the train has not departed its origin
@@ -48,7 +48,7 @@ Feature: Departure from origin
       Then the commuter is notified that the train departed 2 minutes late
       And the commuter is not notified that the train has not yet departed
 
-  Rule: Nothing is said about departure before the ODT
+  # Rule: Nothing is said about departure before the ODT
 
     Scenario: Check before the ODT
       Given the train has not departed its origin

@@ -10,7 +10,7 @@ Feature: Cancellation and alteration
   Background:
     Given a monitored journey on a train with an ODT of 15:00
 
-  Rule: A cancellation is notified as soon as it is seen
+  # Rule: A cancellation is notified as soon as it is seen
 
     Scenario: Train is cancelled before it departs its origin
       Given the train has been cancelled
@@ -30,7 +30,7 @@ Feature: Cancellation and alteration
       When the system checks the train at 15:08
       Then the commuter is notified that the train is cancelled
 
-  Rule: A cancelled train is notified once and then no longer monitored
+  # Rule: A cancelled train is notified once and then no longer monitored
 
     Scenario: Later checks of a cancelled train
       Given the commuter has been notified that the train is cancelled
@@ -38,7 +38,7 @@ Feature: Cancellation and alteration
       Then no notification is sent
       And the journey is no longer monitored
 
-  Rule: Partial cancellations and diversions are notified as cancellations
+  # Rule: Partial cancellations and diversions are notified as cancellations
 
     Scenario Outline: Train no longer runs as planned
       Given the train has the alteration "<alteration>"

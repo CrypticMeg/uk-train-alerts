@@ -6,7 +6,7 @@ Feature: Monitoring journeys
 
   The system checks all monitored journeys every 5 minutes.
 
-  Rule: Several journeys are monitored independently
+  # Rule: Several journeys are monitored independently
 
     Scenario: Two journeys on the same day
       Given monitored journeys on the 15:00 and 16:00 trains
@@ -14,7 +14,7 @@ Feature: Monitoring journeys
       Then each journey's notifications are decided independently
       And each notification identifies its train
 
-  Rule: Notifications due for one journey in the same check are combined
+  # Rule: Notifications due for one journey in the same check are combined
 
     Scenario: Train not yet departed and already delayed
       Given a monitored journey on a train with an ODT of 15:00
@@ -36,7 +36,7 @@ Feature: Monitoring journeys
       Then exactly one notification is sent
       And it reports that the train departed 7 minutes late and is 7 minutes late
 
-  Rule: The calendar is the primary source of journeys when available
+  # Rule: The calendar is the primary source of journeys when available
 
     @assumption
     Scenario: Same train in the calendar and the configuration
@@ -60,7 +60,7 @@ Feature: Monitoring journeys
       When the system checks the trains
       Then the 15:00 train is no longer monitored
 
-  Rule: Monitoring of a journey ends when the train departs the boarding station
+  # Rule: Monitoring of a journey ends when the train departs the boarding station
 
     Scenario: Train departs the boarding station
       Given a monitored journey with a delay band size N of 5 minutes
@@ -77,7 +77,7 @@ Feature: Monitoring journeys
       Then the commuter is notified that the train departed on time
       And the journey is no longer monitored
 
-  Rule: A notification is only recorded as sent once it is delivered
+  # Rule: A notification is only recorded as sent once it is delivered
 
     Scenario: Notification service is unavailable
       Given a notification is due for a monitored journey
@@ -92,7 +92,7 @@ Feature: Monitoring journeys
       When the system checks the trains
       Then the notification is sent
 
-  Rule: A train data source failure is notified once per outage
+  # Rule: A train data source failure is notified once per outage
 
     Scenario: Train data source becomes unavailable
       Given the train data source was available at the last check
@@ -113,7 +113,7 @@ Feature: Monitoring journeys
       When the system checks the trains
       Then the commuter is notified that train data is unavailable
 
-  Rule: A train that cannot be found is a system error, not a notification
+  # Rule: A train that cannot be found is a system error, not a notification
 
     Scenario: Journey's train is not in the train data
       Given a monitored journey on a train that the train data source does not know

@@ -13,7 +13,7 @@ Feature: Delay at the boarding station
   Background:
     Given a monitored journey with a delay band size N of 5 minutes
 
-  Rule: The commuter is notified whenever the delay band rises
+  # Rule: The commuter is notified whenever the delay band rises
 
     Scenario Outline: Delay rises into a higher band
       Given the train was <previous> minutes late at the last check
@@ -41,7 +41,7 @@ Feature: Delay at the boarding station
       Then exactly one delay notification is sent
       And the commuter is notified that the train is 12 minutes late
 
-  Rule: The commuter is notified whenever the delay band falls
+  # Rule: The commuter is notified whenever the delay band falls
 
     Scenario Outline: Delay falls into a lower, non-zero band
       Given the train was <previous> minutes late at the last check
@@ -67,7 +67,7 @@ Feature: Delay at the boarding station
         | 5        | 4       |
         | 6        | -1      |
 
-  Rule: No notification is sent while the delay stays within its band
+  # Rule: No notification is sent while the delay stays within its band
 
     Scenario Outline: Delay changes within a band
       Given the train was <previous> minutes late at the last check
@@ -82,7 +82,7 @@ Feature: Delay at the boarding station
         | 12       | 10      |
         | -2       | 3       |
 
-  Rule: A delay oscillating across a band boundary notifies on every crossing
+  # Rule: A delay oscillating across a band boundary notifies on every crossing
 
     Scenario: Delay flaps across a band boundary
       Given the train was 9 minutes late at the last check
