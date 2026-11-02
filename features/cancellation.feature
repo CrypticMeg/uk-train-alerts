@@ -8,7 +8,7 @@ Feature: Cancellation and alteration
   notification only needs to prompt the commuter to look.
 
   Background:
-    Given a monitored journey on a train with an Orignin Departure Time of 15:00
+    Given a monitored journey on a train with an ODT of 15:00
 
   Rule: A cancellation is notified as soon as it is seen
 

@@ -17,7 +17,8 @@ Feature: Delay at the boarding station
 
     Scenario Outline: Delay rises into a higher band
       Given the train was <previous> minutes late at the last check
-      When the system checks the train and it is <current> minutes late
+      And the train is now <current> minutes late
+      When the system checks the train
       Then the commuter is notified that the train is <current> minutes late
 
       Examples:
@@ -29,12 +30,14 @@ Feature: Delay at the boarding station
 
     Scenario: First check finds the train already delayed
       Given the train has not been checked before
-      When the system checks the train and it is 7 minutes late
+      And the train is now 7 minutes late
+      When the system checks the train
       Then the commuter is notified that the train is 7 minutes late
 
     Scenario: Delay skips several bands between checks
       Given the train was 3 minutes late at the last check
-      When the system checks the train and it is 12 minutes late
+      And the train is now 12 minutes late
+      When the system checks the train
       Then exactly one delay notification is sent
       And the commuter is notified that the train is 12 minutes late
 
@@ -42,7 +45,8 @@ Feature: Delay at the boarding station
 
     Scenario Outline: Delay falls into a lower, non-zero band
       Given the train was <previous> minutes late at the last check
-      When the system checks the train and it is <current> minutes late
+      And the train is now <current> minutes late
+      When the system checks the train
       Then the commuter is notified that the train is <current> minutes late
 
       Examples:
@@ -53,7 +57,8 @@ Feature: Delay at the boarding station
 
     Scenario Outline: Delay falls back into band 0
       Given the train was <previous> minutes late at the last check
-      When the system checks the train and it is <current> minutes late
+      And the train is now <current> minutes late
+      When the system checks the train
       Then the commuter is notified that the train is back on time
 
       Examples:
@@ -66,7 +71,8 @@ Feature: Delay at the boarding station
 
     Scenario Outline: Delay changes within a band
       Given the train was <previous> minutes late at the last check
-      When the system checks the train and it is <current> minutes late
+      And the train is now <current> minutes late
+      When the system checks the train
       Then no delay notification is sent
 
       Examples:
