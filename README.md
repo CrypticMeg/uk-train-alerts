@@ -196,15 +196,59 @@ sudo pmset repeat wake MTWRF 06:45:00
 - Do not commit API tokens, JWTs, or notification URLs.
 - If a credential is exposed, revoke or rotate it immediately.
 
-
 ## Testing and Linting
 
-To lint and test the codebase run:
+The project is developed behaviour-first: the expected behaviour is written
+as Gherkin scenarios in `features/`, which are executed by
+[pytest-bdd](https://pytest-bdd.readthedocs.io/). Unit tests then drive out
+the implementation underneath them.
 
+### Setup
+
+Development dependencies are declared in `pyproject.toml`. On Debian, install
+them with APT:
+
+```bash
+sudo apt install python3-requests python3-yaml python3-dotenv \
+    python3-pytest python3-pytest-bdd pycodestyle pydocstyle
 ```
-make lint
-make test
+
+Or, in a virtual environment:
+
+```bash
+pip install -e '.[dev]'
 ```
+
+pytest-bdd is held below version 8 to match the version Debian packages, so
+both environments parse the feature files identically. Because version 7 does
+not support the Gherkin `Rule:` keyword, rules appear as `# Rule:` comments
+for now.
+
+### Running
+
+```bash
+make lint             # pycodestyle and pydocstyle
+make test             # every test suite
+make test-smoke       # smoke tests for the proof-of-concept script
+make test-acceptance  # Gherkin scenarios against the train_alerts package
+```
+
+### Layout
+
+```text
+features/          Gherkin scenarios: the specification
+tests/conftest.py  dummy credentials, so no test can reach RTT or ntfy
+tests/smoke/       proof-of-concept tests; removed along with check_trains.py
+tests/acceptance/  step definitions and fakes for the scenarios
+```
+
+### Workflow
+
+1. Scenarios and their step definitions are written on a feature branch and
+   merged to `development`, where they fail.
+2. On the same feature branch, unit tests and code are written until the scenarios pass, and then this is merged to `development`
+3. `development` is merged to `main` only when `make lint` and `make test`
+   are clean and the change has been reviewed, and all the features are in place.
 
 ## License
 
