@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uk-train-alerts"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "python-dotenv>=1.0",
+    "PyYAML>=6.0",
+    "requests>=2.32",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pycodestyle>=2.12",
+    "pydocstyle>=6.3",
+    "pytest>=8.3",
+    "pytest-bdd>=7.1,<8",
+]
+
+[tool.setuptools]
+packages = ["train_alerts"]
+py-modules = ["check_trains"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+bdd_features_base_dir = "features/"
+markers = [
+    "delay: delay band notifications",
+    "departure: departure from origin",
+    "cancellation: cancellations and alterations",
+    "monitoring: journey monitoring",
+    "assumption: behaviour assumed, not yet confirmed",
+]
