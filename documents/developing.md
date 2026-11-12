@@ -119,5 +119,6 @@ Versions are `major.minor.patch`. To make a release:
 4. Tag the packaging commit with the upstream version plus the Debian
    revision, for example `0.1.0-1`.
 
-A `release` target in the Makefile will run the build and release steps. It
-doesn't exist yet, and neither does `debian/latest`.
+A `release` target in the Makefile will run the build and release steps. For
+now it is a placeholder that fails with a message, and `debian/latest` doesn't
+exist yet.
