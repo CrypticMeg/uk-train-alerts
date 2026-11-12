@@ -98,8 +98,8 @@ A feature is finished when its acceptance tests are unskipped and green.
 - `debian/latest` holds the packaging. See below.
 
 A feature branch is merged to `development` only when it is green and
-unskipped, and `make check` is clean. `development` is merged to `main` when the change has been reviewed and the features for the release
-are in place.
+unskipped, and `make check` is clean. `development` is merged to `main` when
+the change has been reviewed and the features for the release are in place.
 
 ## Debian packaging
 
