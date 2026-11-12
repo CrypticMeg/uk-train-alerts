@@ -1,6 +1,6 @@
 # UK Train Alerts
 
-<TBC>
+This is an alert system for changes in planned train journeys. It alerts the user when their planned train journey is cancelled or delayed. It delivers updates on changes in status and gives the user sufficient information to allow them to consider alternative journey options (without the user having to actively seek out this information). It is useful for any commuter or train traveller with a planned journey.
 
 ## Running locally
 
