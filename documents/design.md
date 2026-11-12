@@ -10,9 +10,10 @@ package that will replace it.
 
 ## The idea
 
-A commuter plans particular journeys. The system watches those trains and
-speaks only when something changes materially, so that silence means nothing
-has changed.
+A commuter or other train traveller plans particular journeys. The system
+watches those trains and speaks only when something changes materially. The
+traveller can then consider alternatives without having to seek out the
+information, and silence means nothing has changed.
 
 Every five minutes the system runs one check. For each monitored journey it
 asks the Realtime Trains (RTT) API about the train, decides which
