@@ -33,9 +33,11 @@ comments for now.
 ## Check your work
 
 ```bash
+make check            # lint and test: run this before merging
 make lint             # pycodestyle and pydocstyle
 make test             # every test suite
 make test-smoke       # smoke tests for the proof-of-concept script
+make test-unit        # unit tests for the train_alerts package
 make test-acceptance  # Gherkin scenarios against the train_alerts package
 ```
 
@@ -62,7 +64,7 @@ tests/acceptance/  scenario bindings, step definitions and fakes
 - Lines are at most 79 characters, checked by `pycodestyle`.
 - Every module, class and function has a docstring, checked by `pydocstyle`.
   The first line is a short imperative sentence.
-- `make lint` must be clean before merging.
+- `make lint` must be clean before merging, as part of `make check`.
 
 ## Tests
 
@@ -96,8 +98,7 @@ A feature is finished when its acceptance tests are unskipped and green.
 - `debian/latest` holds the packaging. See below.
 
 A feature branch is merged to `development` only when it is green and
-unskipped, and `make lint` and `make test` are clean. `development` is merged
-to `main` when the change has been reviewed and the features for the release
+unskipped, and `make check` is clean. `development` is merged to `main` when the change has been reviewed and the features for the release
 are in place.
 
 ## Debian packaging
