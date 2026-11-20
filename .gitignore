@@ -12,6 +12,7 @@ logs/
 .venv/
 __pycache__/
 *.pyc
+*.egg-info/
 
 # macOS
 .DS_Store
